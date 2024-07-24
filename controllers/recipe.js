@@ -21,6 +21,12 @@ const updateRecipe = async (req, res) => {
         if (!recipe) {
             return res.status(404).send('Recipe not found');
         }
+
+        // check if creator is the same as the one in the token
+        if (recipe.creator.toString() !== req.user.id) {
+            return res.status(403).send('Forbidden');
+        }
+
         recipe.title = req.body.title;
         recipe.ingredients = req.body.ingredients;
         recipe.instructions = req.body.instructions;

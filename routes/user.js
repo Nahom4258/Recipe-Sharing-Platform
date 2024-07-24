@@ -4,6 +4,5 @@ const { getUsers, getUser, updateUser, deleteUser } = require('../controllers/us
 userRouter.get('/', getUsers);
 userRouter.get('/:id', getUser);
 userRouter.put('/:id', updateUser);
-userRouter.delete('/:id', deleteUser);
 
 module.exports = userRouter;

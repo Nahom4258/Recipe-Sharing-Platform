@@ -18,6 +18,12 @@ const updateUser = async (req, res) => {
         if (!user) {
             return res.status(404).send('User not found');
         }
+
+        // check if user is the same as the one in the token
+        if (user._id.toString() !== req.user.id) {
+            return res.status(403).send('Forbidden');
+        }
+
         user.firstname = req.body.firstname;
         user.lastname = req.body.lastname;
         user.email = req.body.email;
