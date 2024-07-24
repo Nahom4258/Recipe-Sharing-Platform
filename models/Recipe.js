@@ -1,5 +1,4 @@
-import { type } from 'express/lib/response';
-import mongoose from 'mongoose';
+const mongoose = require('mongoose')
 const { Schema } = mongoose;
 
 const RecipeSchema = new Schema({

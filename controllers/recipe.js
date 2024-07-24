@@ -13,7 +13,7 @@ const createRecipe = async (req, res) => {
 }
 
 // edit recipe, write whole
-const editRecipe = async (req, res) => {
+const updateRecipe = async (req, res) => {
     try {
         const recipe = await Recipe.findById(req.params.id);
         if (!recipe) {
@@ -57,4 +57,18 @@ const getRecipes = async (req, res) => {
     }
 }
 
-module.exports = { createRecipe, editRecipe, deleteRecipe, getRecipes };
+// get single recipe
+const getRecipe = async (req, res) => {
+    try {
+        const recipe = await Recipe.findById(req.params.id);
+        if (!recipe) {
+            return res.status(404).send('Recipe not found');
+        }
+        res.send(recipe);
+    }
+    catch (e) {
+        res.status(500).send('Internal error');
+    }
+}
+
+module.exports = { createRecipe, updateRecipe, deleteRecipe, getRecipes, getRecipe };

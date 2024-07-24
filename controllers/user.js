@@ -1,19 +1,5 @@
 const User = require('../models/User');
 
-// get profile, use id from /:id
-const getProfile = async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id);
-        if (!user) {
-            return res.status(404).send('User not found');
-        }
-        res.send(user);
-    }
-    catch (e) {
-        res.status(500).send('Internal error');
-    }
-}
-
 // get users, add these filters: name, email from query params
 const getUsers = async (req, res) => {
     try {
@@ -58,3 +44,19 @@ const deleteUser = async (req, res) => {
         res.status(500).send('Internal error');
     }
 }
+
+// get single user, use id from /:id
+const getUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        res.send(user);
+    }
+    catch (e) {
+        res.status(500).send('Internal error');
+    }
+}
+
+module.exports = { getUsers, updateUser, deleteUser, getUser };

@@ -1,7 +1,16 @@
 const Comment = require('../models/Comment');
+const User = require('../models/User');
 
 const createComment = async (req, res) => {
     try {
+        // check if body.author exists in User collection, else return 404
+        const author_id = req.body.author;
+        const author = await User.findById(author_id);
+
+        if (!author) {
+            return res.status(404).send('Author not found');
+        }
+
         const comment = new Comment(req.body);
         await comment.save();
         res.status(201).send(comment);
@@ -11,7 +20,7 @@ const createComment = async (req, res) => {
     }
 }
 
-const editComment = async (req, res) => {
+const updateComment = async (req, res) => {
     try {
         const comment = await Comment.findById(req.params.id);
         if (!comment) {
@@ -51,4 +60,18 @@ const getComments = async (req, res) => {
     }
 }
 
-module.exports = { createComment, editComment, deleteComment, getComments };
+// get single comment
+const getComment = async (req, res) => {
+    try {
+        const comment = await Comment.findById(req.params.id);
+        if (!comment) {
+            return res.status(404).send('Comment not found');
+        }
+        res.send(comment);
+    }
+    catch (e) {
+        res.status(500).send('Internal error');
+    }
+}
+
+module.exports = { createComment, updateComment, deleteComment, getComments, getComment };
