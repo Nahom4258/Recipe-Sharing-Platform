@@ -2,7 +2,9 @@ const Recipe = require('../models/Recipe');
 
 // create recipe, write whole
 const createRecipe = async (req, res) => {
+
     try {
+        req.body.creator = req.user.id;
         const recipe = new Recipe(req.body);
         await recipe.save();
         res.status(201).send(recipe);
@@ -38,7 +40,7 @@ const deleteRecipe = async (req, res) => {
         if (!recipe) {
             return res.status(404).send('Recipe not found');
         }
-        await recipe.remove();
+        await recipe.deleteOne();
         res.send(recipe);
     }
     catch (e) {

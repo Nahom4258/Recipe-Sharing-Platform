@@ -33,12 +33,16 @@ const updateUser = async (req, res) => {
 // delete user, use id from /:id
 const deleteUser = async (req, res) => {
     try {
-        const user = await User.findById(req.params.id);
+        const userId = req.params.id;
+        console.log('user id: ', userId)
+        const user = await User.findById('66a10aef7b4fac23190009a9');
+
         if (!user) {
             return res.status(404).send('User not found');
         }
-        await user.remove();
-        res.send(user);
+        console.log('user: ', user)
+        await user.deleteOne();
+        res.send('Deleted successfully!');
     }
     catch (e) {
         res.status(500).send('Internal error');

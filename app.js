@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const mainRouter = require('./routes/routes');
+const swaggerDocs = require('./swagger');
 
 require('dotenv').config();
 
@@ -11,16 +12,17 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.use(mainRouter)
+app.use('/api', mainRouter)
 
 const uri = process.env.MONGODB_URI;
-
-mongoose.connect(uri,)
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('Failed to connect to MongoDB', err));
-
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-    console.log(`Listening on: http://localhost:${PORT}`);
-})
+mongoose.connect(uri,)
+    .then(() => {
+        console.log('Connected to MongoDB')
+        app.listen(PORT, () => {
+            console.log(`Server connected to http://localhost:${PORT}`);
+        })
+        swaggerDocs(app, PORT);
+    })
+    .catch(err => console.error('Failed to connect to MongoDB', err));
